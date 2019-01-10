@@ -1,17 +1,31 @@
 ## Create an inverse matrix by creating a cache matrix
 ## Returns the inverse of the matrix given
 
-## Creates a matrix from the input to further be used
+## Creates a special matrix to cache its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-        
-        
-
+        i <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        get <- function() x
+        setinverse <- function(inverse) m <<- inverse
+        getinverse <- function() m
+        list(set = set, get = get, setinverse = setinverse, getinverse = getinverse)
 }
 
-
-## Actually inverts the cache matrix for returning the intended
+## Retrieves the matrix if inversed or else solves by inverting and returns the inverse of the matrix
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        m <- x$getinverse()
+        if(!is.null(m)) {
+                message("getting cache matrix")
+                return(m)
+        }
+        data <- x$get()
+        m <- inverse(data, ...)
+        x$setinverse(m)
+        m
 }
